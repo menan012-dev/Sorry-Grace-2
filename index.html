@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pour Grace</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: Arial, Helvetica, sans-serif;
+      background: url('background.jpg') no-repeat center center/cover;
+      color: #4a2230;
+      padding: 24px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Soft overlay for readability */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: rgba(255, 240, 245, 0.7);
+      backdrop-filter: blur(2px);
+      z-index: 0;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 680px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 24px;
+      padding: 32px;
+      box-shadow: 0 18px 50px rgba(120, 50, 80, 0.18);
+      text-align: center;
+      backdrop-filter: blur(6px);
+      position: relative;
+      z-index: 2;
+      transition: all 0.9s ease;
+    }
+
+    .card.yes-mode {
+      transform: scale(1.03);
+      box-shadow: 0 24px 60px rgba(180, 60, 110, 0.3);
+    }
+
+    h1 { color: #b03060; }
+
+    .message {
+      text-align: left;
+      background: #fff7fa;
+      border: 1px solid #f5c9d8;
+      border-radius: 18px;
+      padding: 18px;
+      margin: 22px 0;
+      transition: all 0.8s ease;
+    }
+
+    .buttons { display: flex; justify-content: center; gap: 14px; }
+
+    button {
+      border: none;
+      border-radius: 999px;
+      padding: 14px 22px;
+      cursor: pointer;
+    }
+
+    .yes { background: #d94f7a; color: white; }
+    .no { background: #f3d7e1; }
+
+    .result {
+      display: none;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.9s ease;
+      margin-top: 20px;
+    }
+
+    .result.show {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .fade-soft { opacity: 0.3; }
+
+    .flower, .grace-name {
+      position: absolute;
+      animation: floatUp 5s linear forwards;
+      pointer-events: none;
+    }
+
+    .grace-name {
+      font-weight: bold;
+      color: rgba(176,48,96,0.4);
+    }
+
+    @keyframes floatUp {
+      from { transform: translateY(100vh); opacity: 0; }
+      to { transform: translateY(-10vh); opacity: 0; }
+    }
+
+    .sparkle {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: white;
+      animation: sparkleAnim 3s linear infinite;
+    }
+
+    @keyframes sparkleAnim {
+      0% { opacity: 0; }
+      50% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="card" id="card">
+
+<h1 id="title">Grace, je suis vraiment désolé 💗</h1>
+
+<div class="message" id="message">
+<p>Grace, je n’ai jamais voulu te décevoir.</p>
+<p>Je suis vraiment désolé d’avoir été méchant avec toi parfois.</p>
+<p>Je tiens énormément à toi, mais je sais que ce n’est pas une excuse.</p>
+<p>Tu comptes beaucoup pour moi.</p>
+</div>
+
+<p id="question">Est-ce que tu peux me pardonner ?</p>
+
+<div class="buttons" id="buttons">
+<button class="yes" onclick="showYes()">Oui 💖</button>
+<button class="no" onclick="showNo()">Pas encore</button>
+</div>
+
+<div id="yesResult" class="result">
+Merci Grace 💖🌸🌷🌹<br>
+Je te promets de faire mieux.
+</div>
+
+<div id="noResult" class="result">
+Je comprends Grace 💔
+</div>
+
+</div>
+
+<!-- Video -->
+<div id="videoContainer" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); align-items:center; justify-content:center; z-index:5;">
+<video id="video" width="80%" controls>
+<source src="video.mp4" type="video/mp4">
+</video>
+</div>
+
+<script>
+function showYes() {
+  document.getElementById('card').classList.add('yes-mode');
+  document.getElementById('yesResult').classList.add('show');
+  createFlowers();
+  createNames();
+  createSparkles();
+
+  setTimeout(() => {
+    document.getElementById('videoContainer').style.display = 'flex';
+    document.getElementById('video').play();
+  }, 1200);
+}
+
+function showNo() {
+  document.getElementById('noResult').classList.add('show');
+}
+
+function createFlowers() {
+  const flowers = ['🌸','🌷','🌹','💐'];
+  for (let i=0;i<20;i++){
+    let f=document.createElement('div');
+    f.className='flower';
+    f.innerText=flowers[Math.random()*flowers.length|0];
+    f.style.left=Math.random()*100+'vw';
+    document.body.appendChild(f);
+    setTimeout(()=>f.remove(),5000);
+  }
+}
+
+function createNames() {
+  for (let i=0;i<10;i++){
+    let g=document.createElement('div');
+    g.className='grace-name';
+    g.innerText='Grace';
+    g.style.left=Math.random()*100+'vw';
+    document.body.appendChild(g);
+    setTimeout(()=>g.remove(),5000);
+  }
+}
+
+function createSparkles() {
+  for (let i=0;i<30;i++){
+    let s=document.createElement('div');
+    s.className='sparkle';
+    s.style.left=Math.random()*100+'vw';
+    s.style.top=Math.random()*100+'vh';
+    document.body.appendChild(s);
+    setTimeout(()=>s.remove(),3000);
+  }
+}
+</script>
+
+</body>
+</html>
